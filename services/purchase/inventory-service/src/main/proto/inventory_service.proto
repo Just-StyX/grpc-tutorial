@@ -1,0 +1,31 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+
+package jsl.group.commons;
+
+service InventoryService {
+  rpc addProductCount(ProductDetails) returns (google.protobuf.Int32Value);
+  rpc subtractProductCount(ProductDetails) returns (google.protobuf.Int32Value);
+  rpc isAvailable(ItemDetails) returns (ItemDetailsResponse);
+}
+
+message ProductDetails {
+  ProductId productId = 1;
+  string productName = 2;
+  int32 quantity = 3;
+}
+
+message ProductId {
+  string value = 1;
+}
+
+message ItemDetails {
+  string productId = 1;
+  int32 quantity = 2;
+}
+
+message ItemDetailsResponse {
+  string productId = 1;
+  string productName = 2;
+  bool inStock = 3;
+}

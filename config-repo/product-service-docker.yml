@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: product-service
+  grpc.server:
+    port: 8080
+    host: product-service
+  datasource:
+    url: jdbc:postgresql://postgres/ecommerce
+    password: password
+    username: username
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+      database: postgresql
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://keycloak:9092/realms/gateway/protocol/openid-connect/certs"
+      client:
+        provider:
+          keycloak:
+            issuer-uri: "http://keycloak:9092/realms/gateway"
+        registration:
+          swagger:
+            provider: keycloak
+            client-id: openapi-client
+            client-secret: 66zhDyYXxEhKs8RYP8FtlSII5LaTxTak
+            authorization-grant-type: client_credentials
+            scope: openid,offline_access,profile
+
+management:
+  endpoint.health.show-details: "ALWAYS"
+  endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    org.springframework.cloud.gateway: TRACE

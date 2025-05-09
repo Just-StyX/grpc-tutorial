@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: order-service
+  cloud:
+    stream:
+      defaultBinder: rabbit
+      default.contentType: application/json
+      bindings:
+        orders-out-0:
+          destination: orders
+          producer:
+            required-groups: auditGroup
+            partition-key-expression: headers['partitionKey']
+            partition-count: 2
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  endpoint.health.show-details: "ALWAYS"
+  endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    org.springframework.cloud.gateway: TRACE

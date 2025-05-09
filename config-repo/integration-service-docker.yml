@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: integration-service
+  grpc.client:
+    channels:
+      inventory.address: inventory-service:8080
+      product.address: product-service:8080
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: "http://keycloak:9092/realms/gateway"
+        registration:
+          swagger:
+            provider: keycloak
+            client-id: openapi-client
+            client-secret: 66zhDyYXxEhKs8RYP8FtlSII5LaTxTak
+            authorization-grant-type: client_credentials
+            scope: openid,offline_access,profile
+
+management:
+  endpoint.health.show-details: "ALWAYS"
+  endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    org.springframework.cloud.gateway: TRACE

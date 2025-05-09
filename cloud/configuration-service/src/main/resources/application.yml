@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: configuration-service
+  profiles.active: native
+  cloud.config.server.native.searchLocations: files:${PWD}/config-repo
+
+server.port: 8081
+
+logging.level.root: INFO
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"
+
+---
+spring:
+  config.activate.on-profile: docker
+  cloud.config.server.native.searchLocations: file:/config-repo

@@ -1,0 +1,20 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "inventory_service.proto";
+
+package jsl.group.commons;
+
+service ProductService {
+  rpc createProduct(Product) returns (ProductId);
+  rpc getProduct(ProductId) returns (Product);
+  rpc updateProduct(Product) returns (ProductId);
+  rpc deleteProduct(ProductId) returns (google.protobuf.StringValue);
+}
+
+message Product {
+  string id = 1;
+  string productName = 2;
+  string productBarcode = 3;
+  float productPrice = 4;
+  string productDescription = 5;
+}

@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: checkout-service
+  grpc.client:
+    channels:
+      inventory.address: inventory-service:8080
+  cloud:
+    stream:
+      defaultBinder: rabbit
+      default.contentType: application/json
+      bindings:
+        orderProcessing-in-0:
+          destination: orders
+          group: ordersGroup
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 500
+            backOffMaxInterval: 1000
+            backOffMultiplier: 2.0
+        shipping-out-0:
+          destination: shipping
+          producer:
+            required-groups: auditGroup
+            partition-key-expression: headers['partitionKey']
+            partition-count: 2
+      rabbit:
+        bindings:
+          orderProcessing-in-0:
+            autoBindDlq: true
+            republishToDlq: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  endpoint.health.show-details: "ALWAYS"
+  endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    org.springframework.cloud.gateway: TRACE

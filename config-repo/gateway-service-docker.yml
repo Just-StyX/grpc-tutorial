@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: integration-service
+          uri: http://integration-service:8080
+          predicates:
+            - Path=/product/**
+        - id: checkout-service
+          uri: http://checkout-service:8080
+          predicates:
+            - Path=/checkout/**
+        - id: postgres
+          uri: http://postress:5433
+          predicates:
+            - Path=/images/database
+        - id: rabbitmq
+          uri: http://rabbitmq:5672
+          predicates:
+            - Path=/rabbitmq/**
+        - id: configuration-service
+          uri: http://configuration-service:8081
+          predicates:
+            - Path=/config/**
+          filters:
+            - RewritePath=/config/(?<segment>.*), /$\{segment}
+
+management:
+  endpoint.health.show-details: "ALWAYS"
+  endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    org.springframework.cloud.gateway: TRACE
