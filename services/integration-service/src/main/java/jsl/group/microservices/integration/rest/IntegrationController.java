@@ -1,5 +1,7 @@
 package jsl.group.microservices.integration.rest;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jsl.group.commons.event.EventType;
 import jsl.group.commons.models.*;
@@ -13,6 +15,8 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("product")
+@SecurityRequirement(name = "security_authentication")
+@Tag(name = "Product Integration Services", description = "APIs about product services component")
 public class IntegrationController {
     private final RestTemplate restTemplate;
     private final IntegrationService integrationService;

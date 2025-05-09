@@ -3,6 +3,8 @@ spring:
     name: gateway-service
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay=
       routes:
         - id: integration-service
           uri: http://integration-service:8080
@@ -26,6 +28,22 @@ spring:
             - Path=/config/**
           filters:
             - RewritePath=/config/(?<segment>.*), /$\{segment}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://keycloak:9092/realms/gateway/protocol/openid-connect/certs"
+      client:
+        provider:
+          keycloak:
+            issuer-uri: "http://keycloak:9092/realms/gateway"
+        registration:
+          swagger:
+            provider: keycloak
+            client-id: openapi-client
+            client-secret: 66zhDyYXxEhKs8RYP8FtlSII5LaTxTak
+            authorization-grant-type: authorization_code
+            scope: openid,offline_access,profile
 
 management:
   endpoint.health.show-details: "ALWAYS"

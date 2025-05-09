@@ -33,6 +33,11 @@ spring:
     port: 5672
     username: guest
     password: guest
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://keycloak:9092/realms/gateway/protocol/openid-connect/certs"
 
 management:
   endpoint.health.show-details: "ALWAYS"
@@ -43,3 +48,16 @@ logging:
     root: INFO
     org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
     org.springframework.cloud.gateway: TRACE
+
+springdoc:
+  swagger-ui.path: /checkout/openapi/swagger-ui.html
+  api-docs.path: /checkout/openapi/v3/api-docs
+  packagesToScan: jsl.group.checkout_service
+  pathsToMatch: /**
+  cache.disable: true
+  swagger-ui:
+    oauth2-redirect-uri: /swagger-ui/oauth2-redirect.html
+    oauth:
+      clientId: openapi-client
+      clientSecret: 66zhDyYXxEhKs8RYP8FtlSII5LaTxTak
+      useBasicAuthenticationWithAccessCodeGrant: true

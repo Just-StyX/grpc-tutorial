@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-for index in {1..5}; do
+for index in {1..1}; do
     data='{
              "productName": "Chocolate",
              "productPrice": 100.0,
