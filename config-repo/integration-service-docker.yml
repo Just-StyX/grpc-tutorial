@@ -7,17 +7,9 @@ spring:
       product.address: product-service:8080
   security:
     oauth2:
-      client:
-        provider:
-          keycloak:
-            issuer-uri: "http://keycloak:9092/realms/gateway"
-        registration:
-          swagger:
-            provider: keycloak
-            client-id: openapi-client
-            client-secret: 66zhDyYXxEhKs8RYP8FtlSII5LaTxTak
-            authorization-grant-type: client_credentials
-            scope: openid,offline_access,profile
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://keycloak:9092/realms/gateway/protocol/openid-connect/certs"
 
 management:
   endpoint.health.show-details: "ALWAYS"
@@ -28,3 +20,16 @@ logging:
     root: INFO
     org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
     org.springframework.cloud.gateway: TRACE
+
+springdoc:
+  swagger-ui.path: /product/openapi/swagger-ui.html
+  api-docs.path: /product/openapi/v3/api-docs
+  packagesToScan: jsl.group.microservices.integration
+  pathsToMatch: /**
+  cache.disable: true
+  swagger-ui:
+    oauth2-redirect-uri: /swagger-ui/oauth2-redirect.html
+    oauth:
+      clientId: openapi-client
+      clientSecret: 66zhDyYXxEhKs8RYP8FtlSII5LaTxTak
+      useBasicAuthenticationWithAccessCodeGrant: true
